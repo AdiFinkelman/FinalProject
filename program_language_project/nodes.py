@@ -60,14 +60,6 @@ class ModNode:
 
     def __repr__(self):
         return f"({self.node_a} % {self.node_b})"
-    
-@dataclass
-class PowNode:
-    node_a: any
-    node_b: any
-
-    def __repr__(self):
-        return f"({self.node_a} ** {self.node_b})"
 
 @dataclass
 class EqualsNode:
@@ -84,3 +76,35 @@ class Not_EqualsNode:
 
     def __repr__(self):
         return f"({self.node_a} != {self.node_b})"
+    
+@dataclass
+class GreaterThanNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} > {self.node_b})"
+    
+@dataclass
+class LessThanNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} < {self.node_b})"
+    
+@dataclass
+class GreaterThanEqualNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} >= {self.node_b})"
+    
+@dataclass
+class LessThanEqualNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} <= {self.node_b})"

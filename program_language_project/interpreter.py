@@ -28,14 +28,23 @@ class Interpreter:
     def visit_ModNode(self, node):
         return Result(self.visit(node.node_a).value % self.visit(node.node_b).value)
     
-    def visit_PowNode(self, node):
-        return Result(self.visit(node.node_a).value ** self.visit(node.node_b).value)
-    
     def visit_EqualsNode(self, node):
         return Result(self.visit(node.node_a).value == self.visit(node.node_b).value)
 
     def visit_Not_EqualsNode(self, node):
         return Result(self.visit(node.node_a).value != self.visit(node.node_b).value)
+    
+    def visit_GreaterThanNode(self, node):
+        return Result(self.visit(node.node_a).value > self.visit(node.node_b).value)
+    
+    def visit_LessThanNode(self, node):
+        return Result(self.visit(node.node_a).value < self.visit(node.node_b).value)
+    
+    def visit_GreaterThanEqualNode(self, node):
+        return Result(self.visit(node.node_a).value >= self.visit(node.node_b).value)
+    
+    def visit_LessThanEqualNode(self, node):
+        return Result(self.visit(node.node_a).value <= self.visit(node.node_b).value)
     
     def visit_PlusNode(self, node):
         return Result(self.visit(node.node).value)

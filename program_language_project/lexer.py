@@ -36,15 +36,40 @@ class Lexer:
             elif self.current_char == '%':
                 self.advance()
                 yield Token(TokenType.MODULO)
-            elif self.current_char == '^':
+            elif self.current_char == '=':
                 self.advance()
-                yield Token(TokenType.POWER)
-            elif self.current_char == '==':
+                if self.current_char == '=':
+                    self.advance()
+                    yield Token(TokenType.EQUAL)
+                elif self.current_char not in DIGITS and not '=':
+                    raise Exception("Invalid character '='")
+            elif self.current_char == '!':
                 self.advance()
-                yield Token(TokenType.EQUALS)
-            elif self.current_char == '!=':
+                if self.current_char == '=':
+                    self.advance()
+                    yield Token(TokenType.NOT_EQUALS)
+                elif self.current_char not in DIGITS and not '=':
+                    raise Exception("Invalid character '!'")
+            elif self.current_char == '>':
                 self.advance()
-                yield Token(TokenType.NOT_EQUALS)
+                yield Token(TokenType.GREATER_THAN)
+            elif self.current_char == '<':
+                self.advance()
+                yield Token(TokenType.LESS_THAN)
+            elif self.current_char == '>':
+                self.advance()
+                if self.current_char == '=':
+                    self.advance()
+                    yield Token(TokenType.GREATER_THAN_OR_EQUAL)
+                elif self.current_char not in DIGITS and not '=':
+                    raise Exception("Invalid character '>'")
+            elif self.current_char == '<':
+                self.advance()
+                if self.current_char == '=':
+                    self.advance()
+                    yield Token(TokenType.LESS_THAN_OR_EQUAL)
+                elif self.current_char not in DIGITS and not '=':
+                    raise Exception("Invalid character '<'")
             elif self.current_char == '(':
                 self.advance()
                 yield Token(TokenType.LPAREN)
