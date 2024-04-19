@@ -29,7 +29,7 @@ class Parser:
         result = self.term()
         
         while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUAL, TokenType.NOT_EQUALS, TokenType.GREATER_THAN, 
-                                                                         TokenType.LESS_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.LESS_THAN_OR_EQUAL):
+                                                                         TokenType.LESS_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.LESS_THAN_OR_EQUAL, TokenType.ASSIGN):
             if self.current_token.type == TokenType.PLUS:
                 self.advance()
                 result = AddNode(result, self.term())
@@ -54,13 +54,17 @@ class Parser:
             elif self.current_token.type == TokenType.LESS_THAN_OR_EQUAL:
                 self.advance()
                 result = LessThanEqualNode(result, self.term())
+            elif self.current_token.type == TokenType.ASSIGN:
+                self.advance()
+                result = AssignNode(result, self.expr())
         
         return result
     
     def term(self):
         result = self.factor()
         
-        while self.current_token != None and self.current_token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO):
+        while self.current_token != None and self.current_token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO, 
+                                                                         TokenType.AND, TokenType.OR):
             if self.current_token.type == TokenType.MULTIPLY:
                 self.advance()
                 result = MulNode(result, self.factor())
@@ -70,6 +74,12 @@ class Parser:
             elif self.current_token.type == TokenType.MODULO:
                 self.advance()
                 result = ModNode(result, self.factor())
+            elif self.current_token.type == TokenType.AND:
+                self.advance()
+                result = AndNode(result, self.factor())
+            elif self.current_token.type == TokenType.OR:
+                self.advance()
+                result = OrNode(result, self.factor())
         
         return result
     
@@ -96,5 +106,11 @@ class Parser:
         elif token.type == TokenType.MINUS:
             self.advance()
             return MinusNode(self.factor())
+        elif token.type == TokenType.NOT:
+            self.advance()
+            return NotNode(self.factor())
+        elif token.type == TokenType.VARIABLE:
+            self.advance()
+            return VariableNode(token.value, token.value) 
         
         self.raise_error()

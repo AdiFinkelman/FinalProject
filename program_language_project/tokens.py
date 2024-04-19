@@ -17,6 +17,15 @@ class TokenType(Enum):
     LESS_THAN = 12
     GREATER_THAN_OR_EQUAL = 13
     LESS_THAN_OR_EQUAL = 14
+    AND = 15
+    OR = 16
+    NOT = 17
+    IF = 18
+    ELSE = 19
+    WHILE = 20
+    FOR = 21 
+    ASSIGN = 22
+    VARIABLE = 23
 
 @dataclass
 class Token:

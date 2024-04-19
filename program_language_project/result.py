@@ -5,4 +5,5 @@ class Result:
     value: float
 
     def __repr__(self):
-        return f"{self.value}"
+        if self.value != None:
+            return f"{self.value}"

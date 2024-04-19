@@ -108,3 +108,73 @@ class LessThanEqualNode:
 
     def __repr__(self):
         return f"({self.node_a} <= {self.node_b})"
+    
+@dataclass
+class AndNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} && {self.node_b})"
+    
+@dataclass
+class OrNode:
+    node_a: any
+    node_b: any
+
+    def __repr__(self):
+        return f"({self.node_a} || {self.node_b})"
+
+@dataclass
+class NotNode:
+    node: any
+
+    def __repr__(self):
+        return f"(!{self.node})"
+    
+@dataclass
+class IfNode:
+    condition: any
+    body: any
+
+    def __repr__(self):
+        return f"(if {self.condition} {self.body})"
+    
+@dataclass
+class ElseNode:
+    body: any
+
+    def __repr__(self):
+        return f"(else {self.body})"
+    
+@dataclass
+class WhileNode:
+    condition: any
+    body: any
+
+    def __repr__(self):
+        return f"(while {self.condition} {self.body})"
+    
+@dataclass
+class ForNode:
+    condition: any
+    body: any
+
+    def __repr__(self):
+        return f"(for {self.condition} {self.body})"
+    
+@dataclass
+class AssignNode:
+    variable: str
+    value: float
+
+    def __repr__(self):
+        return f"({self.variable} = {self.value})"
+    
+@dataclass
+class VariableNode:
+    name: str
+    value: float
+
+    def __repr__(self):
+        return f"{self.value}"
