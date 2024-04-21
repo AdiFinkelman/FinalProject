@@ -104,6 +104,8 @@ class Parser:
             return NotNode(self.factor())
         elif token.type == TokenType.IF:
             return condition_stmt(self, token)
+        elif token.type == TokenType.WHILE:
+            return loop_stmt(self, token)
         elif token.type == TokenType.VARIABLE:
             self.advance()
             return VariableNode(token.value, token.value) 
@@ -121,3 +123,14 @@ def condition_stmt(self, token):
             if_body = self.exp()  # Parse the body of the IF statement
             
             return IfNode(condition, if_body)
+    
+def loop_stmt(self, token):
+    if token.type == TokenType.WHILE:
+        self.advance()
+        condition = self.exp()  # Parse the conditional expression
+        if self.current_token.type != TokenType.COLON:
+            self.raise_error()
+        self.advance()
+        body = self.exp()  # Parse the body of the WHILE statement
+        
+        return WhileNode(condition, body)

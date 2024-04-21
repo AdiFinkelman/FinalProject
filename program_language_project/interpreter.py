@@ -67,9 +67,12 @@ class Interpreter:
         return Result("None")
     
     def visit_WhileNode(self, node):
-        while self.visit(node.condition_node).value:
-            self.visit(node.node)
-        return Result(None)
+        result = Result("None")
+        while self.visit(node.condition).value:
+            variable_name = node.body.variable.name
+            print(f"{variable_name} =", self.variables[variable_name])
+            result = self.visit(node.body)
+        return result
     
     def visit_AndNode(self, node):
         return Result(self.visit(node.node_a).value and self.visit(node.node_b).value)
