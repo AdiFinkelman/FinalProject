@@ -19,48 +19,42 @@ class Parser:
         if self.current_token == None:
             return None
         
-        result = self.expr() 
+        result = self.exp() 
         if self.current_token != None:
             self.raise_error()
         
-        return result
+        return result 
     
-    def expr(self):
-        result = self.term()
+    def exp(self):
+        result = self.stmt()
         
-        while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUAL, TokenType.NOT_EQUALS, TokenType.GREATER_THAN, 
-                                                                         TokenType.LESS_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.LESS_THAN_OR_EQUAL, TokenType.ASSIGN):
+        while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUAL, TokenType.NOT_EQUALS, 
+                                                                         TokenType.GREATER_THAN, TokenType.LESS_THAN, TokenType.ASSIGN):
             if self.current_token.type == TokenType.PLUS:
                 self.advance()
-                result = AddNode(result, self.term())
+                result = AddNode(result, self.stmt())
             elif self.current_token.type == TokenType.MINUS:
                 self.advance()
-                result = SubNode(result, self.term())
+                result = SubNode(result, self.stmt())
             elif self.current_token.type == TokenType.EQUAL:
                 self.advance()
-                result = EqualsNode(result, self.term())
+                result = EqualsNode(result, self.stmt())
             elif self.current_token.type == TokenType.NOT_EQUALS:
                 self.advance()
-                result = Not_EqualsNode(result, self.term())
+                result = Not_EqualsNode(result, self.stmt())
             elif self.current_token.type == TokenType.GREATER_THAN:
                 self.advance()
-                result = GreaterThanNode(result, self.term())
+                result = GreaterThanNode(result, self.stmt())
             elif self.current_token.type == TokenType.LESS_THAN:
                 self.advance()
-                result = LessThanNode(result, self.term())
-            elif self.current_token.type == TokenType.GREATER_THAN_OR_EQUAL:
-                self.advance()
-                result = GreaterThanEqualNode(result, self.term())
-            elif self.current_token.type == TokenType.LESS_THAN_OR_EQUAL:
-                self.advance()
-                result = LessThanEqualNode(result, self.term())
+                result = LessThanNode(result, self.stmt())
             elif self.current_token.type == TokenType.ASSIGN:
                 self.advance()
-                result = AssignNode(result, self.expr())
+                result = AssignNode(result, self.exp())
         
         return result
     
-    def term(self):
+    def stmt(self):
         result = self.factor()
         
         while self.current_token != None and self.current_token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO, 
@@ -80,16 +74,15 @@ class Parser:
             elif self.current_token.type == TokenType.OR:
                 self.advance()
                 result = OrNode(result, self.factor())
-        
+            
         return result
-    
     
     def factor(self):
         token = self.current_token
         
         if token.type == TokenType.LPAREN:
             self.advance()
-            result = self.expr()
+            result = self.exp()
             
             if self.current_token.type != TokenType.RPAREN:
                 self.raise_error()
@@ -109,8 +102,31 @@ class Parser:
         elif token.type == TokenType.NOT:
             self.advance()
             return NotNode(self.factor())
+        elif token.type == TokenType.IF:
+            return condition_stmt(self, token)
         elif token.type == TokenType.VARIABLE:
             self.advance()
             return VariableNode(token.value, token.value) 
         
         self.raise_error()
+
+def condition_stmt(self, token):
+    if token.type == TokenType.IF:
+            self.advance()
+            condition = self.exp()  # Parse the conditional expression
+            
+            if self.current_token.type != ' ':
+                self.raise_error()    
+            self.advance()
+
+            if self.current_token.type != TokenType.COLON:
+                self.raise_error()
+            self.advance()
+            
+            if self.current_token.type != ' ':
+                self.raise_error()    
+            self.advance()
+
+            if_body = self.exp()  # Parse the body of the IF statement
+            
+            return IfNode(condition, if_body)

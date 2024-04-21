@@ -43,12 +43,6 @@ class Interpreter:
     def visit_LessThanNode(self, node):
         return Result(self.visit(node.node_a).value < self.visit(node.node_b).value)
     
-    def visit_GreaterThanEqualNode(self, node):
-        return Result(self.visit(node.node_a).value >= self.visit(node.node_b).value)
-    
-    def visit_LessThanEqualNode(self, node):
-        return Result(self.visit(node.node_a).value <= self.visit(node.node_b).value)
-    
     def visit_PlusNode(self, node):
         return Result(self.visit(node.node).value)
     
@@ -68,26 +62,15 @@ class Interpreter:
         return Result(value)
     
     def visit_IfNode(self, node):
-        if self.visit(node.condition_node).value:
-            return self.visit(node.true_case_node)
-        elif node.false_case_node:
-            return self.visit(node.false_case_node)
-        return Result(None)
+        if self.visit(node.condition).value:
+            return self.visit(node.body)
+        else:
+            return Result(None)
     
     def visit_WhileNode(self, node):
         while self.visit(node.condition_node).value:
             self.visit(node.node)
         return Result(None)
-    
-    def visit_ForNode(self, node):
-        self.visit(node.assign_node)
-        while self.visit(node.condition_node).value:
-            self.visit(node.node)
-            self.visit(node.increment_node)
-        return Result(None)
-    
-    def visit_ElseNode(self, node):
-        return self.visit(node.node)
     
     def visit_AndNode(self, node):
         return Result(self.visit(node.node_a).value and self.visit(node.node_b).value)

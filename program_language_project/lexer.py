@@ -56,20 +56,6 @@ class Lexer:
             elif self.current_char == '<':
                 self.advance()
                 yield Token(TokenType.LESS_THAN)
-            elif self.current_char == '>':
-                self.advance()
-                if self.current_char == '=':
-                    self.advance()
-                    yield Token(TokenType.GREATER_THAN_OR_EQUAL)
-                elif self.current_char not in DIGITS and not '=':
-                    raise Exception("Invalid character '>'")
-            elif self.current_char == '<':
-                self.advance()
-                if self.current_char == '=':
-                    self.advance()
-                    yield Token(TokenType.LESS_THAN_OR_EQUAL)
-                elif self.current_char not in DIGITS and not '=':
-                    raise Exception("Invalid character '<'")
             elif self.current_char == '(':
                 self.advance()
                 yield Token(TokenType.LPAREN)
@@ -93,13 +79,28 @@ class Lexer:
             elif self.current_char == '!':
                 self.advance()
                 yield Token(TokenType.NOT)
+                
             elif self.current_char in LETTERS:
-                variable = self.current_char
+                keyword = self.current_char
                 self.advance()
-                yield Token(TokenType.VARIABLE, variable)
+                while self.current_char is not None and self.current_char in LETTERS:
+                    keyword += self.current_char
+                    self.advance()
+
+                if keyword == "if":
+                    yield Token(TokenType.IF)
+                elif keyword == "while":
+                    yield Token(TokenType.WHILE)
+                else:
+                    yield Token(TokenType.VARIABLE, keyword)
+                ''' while self.current_char in WHITESPACE:
+                    self.advance() '''
                 if self.current_char == '=':
                     self.advance()
                     yield Token(TokenType.ASSIGN)   
+            elif self.current_char == ':':
+                self.advance()
+                yield Token(TokenType.COLON)
             else:
                 raise Exception(f"Illegal character: '{self.current_char}'")
     
@@ -136,7 +137,7 @@ class Lexer:
         
         return Token(TokenType.NUMBER, float(number_str))
     
-    def generate_condition(self):
+    ''' def generate_condition(self):
         condition = self.current_char
         self.advance()
         while self.current_char != None and self.current_char in LETTERS:
@@ -144,8 +145,6 @@ class Lexer:
             self.advance()
         if condition == "if":
             return Token(TokenType.IF, condition)
-        elif condition == "else":
-            return Token(TokenType.ELSE, condition)
     
     def generate_loop(self):
         loop = self.current_char
@@ -154,7 +153,4 @@ class Lexer:
             loop += self.current_char
             self.advance()
         if loop == "while":
-            return Token(TokenType.WHILE, loop)
-        elif loop == "for":
-            return Token(TokenType.FOR, loop)
-        
+            return Token(TokenType.WHILE, loop) '''

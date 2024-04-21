@@ -94,22 +94,6 @@ class LessThanNode:
         return f"({self.node_a} < {self.node_b})"
     
 @dataclass
-class GreaterThanEqualNode:
-    node_a: any
-    node_b: any
-
-    def __repr__(self):
-        return f"({self.node_a} >= {self.node_b})"
-    
-@dataclass
-class LessThanEqualNode:
-    node_a: any
-    node_b: any
-
-    def __repr__(self):
-        return f"({self.node_a} <= {self.node_b})"
-    
-@dataclass
 class AndNode:
     node_a: any
     node_b: any
@@ -141,27 +125,12 @@ class IfNode:
         return f"(if {self.condition} {self.body})"
     
 @dataclass
-class ElseNode:
-    body: any
-
-    def __repr__(self):
-        return f"(else {self.body})"
-    
-@dataclass
 class WhileNode:
     condition: any
     body: any
 
     def __repr__(self):
         return f"(while {self.condition} {self.body})"
-    
-@dataclass
-class ForNode:
-    condition: any
-    body: any
-
-    def __repr__(self):
-        return f"(for {self.condition} {self.body})"
     
 @dataclass
 class AssignNode:
