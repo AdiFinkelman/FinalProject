@@ -64,8 +64,7 @@ class Interpreter:
     def visit_IfNode(self, node):
         if self.visit(node.condition).value:
             return self.visit(node.body)
-        else:
-            return Result(None)
+        return Result("None")
     
     def visit_WhileNode(self, node):
         while self.visit(node.condition_node).value:

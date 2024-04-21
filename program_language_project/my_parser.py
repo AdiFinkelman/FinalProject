@@ -28,7 +28,7 @@ class Parser:
     def exp(self):
         result = self.stmt()
         
-        while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUAL, TokenType.NOT_EQUALS, 
+        while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUALS, TokenType.NOT_EQUALS, 
                                                                          TokenType.GREATER_THAN, TokenType.LESS_THAN, TokenType.ASSIGN):
             if self.current_token.type == TokenType.PLUS:
                 self.advance()
@@ -36,7 +36,7 @@ class Parser:
             elif self.current_token.type == TokenType.MINUS:
                 self.advance()
                 result = SubNode(result, self.stmt())
-            elif self.current_token.type == TokenType.EQUAL:
+            elif self.current_token.type == TokenType.EQUALS:
                 self.advance()
                 result = EqualsNode(result, self.stmt())
             elif self.current_token.type == TokenType.NOT_EQUALS:
@@ -110,23 +110,14 @@ class Parser:
         
         self.raise_error()
 
+
 def condition_stmt(self, token):
     if token.type == TokenType.IF:
             self.advance()
             condition = self.exp()  # Parse the conditional expression
-            
-            if self.current_token.type != ' ':
-                self.raise_error()    
-            self.advance()
-
             if self.current_token.type != TokenType.COLON:
                 self.raise_error()
             self.advance()
-            
-            if self.current_token.type != ' ':
-                self.raise_error()    
-            self.advance()
-
             if_body = self.exp()  # Parse the body of the IF statement
             
             return IfNode(condition, if_body)

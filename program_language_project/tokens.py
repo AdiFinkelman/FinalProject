@@ -11,7 +11,7 @@ class TokenType(Enum):
     RPAREN          = 6
     LETTER          = 7
     MODULO          = 8
-    EQUAL           = 9
+    EQUALS           = 9
     NOT_EQUALS      = 10
     GREATER_THAN    = 11
     LESS_THAN       = 12

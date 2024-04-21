@@ -40,7 +40,7 @@ class Lexer:
                 self.advance()
                 if self.current_char == '=':
                     self.advance()
-                    yield Token(TokenType.EQUAL)
+                    yield Token(TokenType.EQUALS)
                 else:
                     raise Exception("Invalid character '='")
             elif self.current_char == '!':
@@ -97,6 +97,9 @@ class Lexer:
                     self.advance() '''
                 if self.current_char == '=':
                     self.advance()
+                    if self.current_char == '=':
+                        self.advance()
+                        yield Token(TokenType.EQUALS)
                     yield Token(TokenType.ASSIGN)   
             elif self.current_char == ':':
                 self.advance()
@@ -136,21 +139,3 @@ class Lexer:
             return Token(TokenType.NUMBER, float(number_str[1:]))
         
         return Token(TokenType.NUMBER, float(number_str))
-    
-    ''' def generate_condition(self):
-        condition = self.current_char
-        self.advance()
-        while self.current_char != None and self.current_char in LETTERS:
-            condition += self.current_char
-            self.advance()
-        if condition == "if":
-            return Token(TokenType.IF, condition)
-    
-    def generate_loop(self):
-        loop = self.current_char
-        self.advance()
-        while self.current_char != None and self.current_char in LETTERS:
-            loop += self.current_char
-            self.advance()
-        if loop == "while":
-            return Token(TokenType.WHILE, loop) '''
