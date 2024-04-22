@@ -51,10 +51,10 @@ class Parser:
                 result = LessThanNode(result, self.stmt())
             elif self.current_token.type == TokenType.AND:
                 self.advance()
-                result = AndNode(result, self.stmt())
+                result = AndNode(result, self.factor())
             elif self.current_token.type == TokenType.OR:
                 self.advance()
-                result = OrNode(result, self.stmt())
+                result = OrNode(result, self.factor())
             elif self.current_token.type == TokenType.ASSIGN:
                 self.advance()
                 result = AssignNode(result, self.exp())
@@ -116,21 +116,21 @@ class Parser:
 def condition_stmt(self, token):
     if token.type == TokenType.IF:
             self.advance()
-            condition = self.exp()  # Parse the conditional expression
+            condition = self.exp()
             if self.current_token.type != TokenType.COLON:
                 self.raise_error()
             self.advance()
-            if_body = self.exp()  # Parse the body of the IF statement
+            if_body = self.exp()
             
             return IfNode(condition, if_body)
     
 def loop_stmt(self, token):
     if token.type == TokenType.WHILE:
         self.advance()
-        condition = self.exp()  # Parse the conditional expression
+        condition = self.exp()
         if self.current_token.type != TokenType.COLON:
             self.raise_error()
         self.advance()
-        body = self.exp()  # Parse the body of the WHILE statement
+        body = self.exp()
         
         return WhileNode(condition, body)

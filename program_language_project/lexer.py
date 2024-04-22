@@ -71,28 +71,28 @@ class Lexer:
             elif self.current_char == '!':
                 self.advance()
                 yield Token(TokenType.NOT)
-                
+
             elif self.current_char in LETTERS:
                 keyword = self.current_char
                 self.advance()
                 while self.current_char is not None and self.current_char in LETTERS:
                     keyword += self.current_char
                     self.advance()
-
                 if keyword == "if":
                     yield Token(TokenType.IF)
                 elif keyword == "while":
                     yield Token(TokenType.WHILE)
-                else:
+                elif len(keyword) == 1:
                     yield Token(TokenType.VARIABLE, keyword)
-                ''' while self.current_char in WHITESPACE:
-                    self.advance() '''
+                    while self.current_char in WHITESPACE:
+                        self.advance()
                 if self.current_char == '=':
                     self.advance()
                     if self.current_char == '=':
                         self.advance()
                         yield Token(TokenType.EQUALS)
-                    yield Token(TokenType.ASSIGN)   
+                    else:
+                        yield Token(TokenType.ASSIGN)  
             elif self.current_char == ':':
                 self.advance()
                 yield Token(TokenType.COLON)
