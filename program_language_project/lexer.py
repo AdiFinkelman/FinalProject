@@ -84,7 +84,7 @@ class Lexer:
                     yield Token(TokenType.WHILE)
                 elif len(keyword) == 1:
                     yield Token(TokenType.VARIABLE, keyword)
-                    while self.current_char in WHITESPACE:
+                    while self.current_char == ' ':
                         self.advance()
                 if self.current_char == '=':
                     self.advance()
