@@ -64,18 +64,10 @@ class Lexer:
                 yield Token(TokenType.RPAREN)
             elif self.current_char == '&':
                 self.advance()
-                if self.current_char == '&':
-                    self.advance()
-                    yield Token(TokenType.AND)
-                else:
-                    raise Exception("Invalid character '&'")
+                yield Token(TokenType.AND)
             elif self.current_char == '|':
                 self.advance()
-                if self.current_char == '|':
-                    self.advance()
-                    yield Token(TokenType.OR)
-                else:
-                    raise Exception("Invalid character '|'")
+                yield Token(TokenType.OR)
             elif self.current_char == '!':
                 self.advance()
                 yield Token(TokenType.NOT)

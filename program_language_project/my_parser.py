@@ -29,7 +29,8 @@ class Parser:
         result = self.stmt()
         
         while self.current_token != None and self.current_token.type in (TokenType.PLUS, TokenType.MINUS, TokenType.EQUALS, TokenType.NOT_EQUALS, 
-                                                                         TokenType.GREATER_THAN, TokenType.LESS_THAN, TokenType.ASSIGN):
+                                                                         TokenType.GREATER_THAN, TokenType.LESS_THAN, TokenType.AND, TokenType.OR,
+                                                                         TokenType.ASSIGN):
             if self.current_token.type == TokenType.PLUS:
                 self.advance()
                 result = AddNode(result, self.stmt())
@@ -48,6 +49,12 @@ class Parser:
             elif self.current_token.type == TokenType.LESS_THAN:
                 self.advance()
                 result = LessThanNode(result, self.stmt())
+            elif self.current_token.type == TokenType.AND:
+                self.advance()
+                result = AndNode(result, self.stmt())
+            elif self.current_token.type == TokenType.OR:
+                self.advance()
+                result = OrNode(result, self.stmt())
             elif self.current_token.type == TokenType.ASSIGN:
                 self.advance()
                 result = AssignNode(result, self.exp())
@@ -57,8 +64,7 @@ class Parser:
     def stmt(self):
         result = self.factor()
         
-        while self.current_token != None and self.current_token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO, 
-                                                                         TokenType.AND, TokenType.OR):
+        while self.current_token != None and self.current_token.type in (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO):
             if self.current_token.type == TokenType.MULTIPLY:
                 self.advance()
                 result = MulNode(result, self.factor())
@@ -68,12 +74,6 @@ class Parser:
             elif self.current_token.type == TokenType.MODULO:
                 self.advance()
                 result = ModNode(result, self.factor())
-            elif self.current_token.type == TokenType.AND:
-                self.advance()
-                result = AndNode(result, self.factor())
-            elif self.current_token.type == TokenType.OR:
-                self.advance()
-                result = OrNode(result, self.factor())
             
         return result
     
