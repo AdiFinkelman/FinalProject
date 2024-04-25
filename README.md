@@ -19,7 +19,7 @@ This project is a simple interpreter implemented in Python. It can parse and eva
 
 2. Navigate to the project directory:
 ```bash
-   cd Programming-Language-Interpreter
+   cd .\program_language_project\ 
 ```
 
 3. Run the interpreter:
