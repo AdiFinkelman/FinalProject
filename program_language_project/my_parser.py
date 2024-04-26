@@ -10,12 +10,14 @@ class Parser:
         raise Exception("Invalid syntax")
     
     def advance(self):
+        # Advance to the next token.
         try:
             self.current_token = next(self.tokens)
         except StopIteration:
             self.current_token = None
     
     def parse(self):
+        # Parse the input tokens and generate the AST.
         if self.current_token == None:
             return None
         

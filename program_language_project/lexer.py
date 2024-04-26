@@ -1,9 +1,17 @@
 from tokens import Token, TokenType
+import re
 
+# Define constants for memory management
+MAX_RESULT_LENGTH = 1000  # Maximum length for calculation results
+MAX_CODE_LENGTH = 10000   # Maximum length for program code
+MAX_VARIABLES = 100       # Maximum number of variables allowed
+
+# Define constants for lexer
 WHITESPACE = ' \n\t'
 DIGITS = '0123456789'
 LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
+# Lexer class for tokenizing input text
 class Lexer:
     def __init__(self, text):
         self.text = iter(text)
@@ -15,10 +23,13 @@ class Lexer:
         except StopIteration:
             self.current_char = None
 
+    # Token generator method
     def generate_tokens(self):
         while self.current_char != None:
+            # Skip whitespace characters
             while self.current_char in WHITESPACE:
                 self.advance()
+            # Tokenize numbers or arithmetic operators
             if self.current_char == '.' or self.current_char in DIGITS:
                 yield self.generate_number()
             elif self.current_char == '+':
@@ -36,6 +47,7 @@ class Lexer:
             elif self.current_char == '%':
                 self.advance()
                 yield Token(TokenType.MODULO)
+            # Tokenize numbers or equation operators
             elif self.current_char == '=':
                 self.advance()
                 if self.current_char == '=':
@@ -71,8 +83,8 @@ class Lexer:
             elif self.current_char == '!':
                 self.advance()
                 yield Token(TokenType.NOT)
-
             elif self.current_char in LETTERS:
+                # Tokenize keywords or variables
                 keyword = self.current_char
                 self.advance()
                 while self.current_char is not None and self.current_char in LETTERS:
@@ -87,6 +99,7 @@ class Lexer:
                     while self.current_char == ' ':
                         self.advance()
                 if self.current_char == '=':
+                    # Tokenize assignment or comparison operators
                     self.advance()
                     if self.current_char == '=':
                         self.advance()
@@ -98,6 +111,10 @@ class Lexer:
                 yield Token(TokenType.COLON)
             else:
                 raise Exception(f"Illegal character: '{self.current_char}'")
+    
+    def is_valid_variable_name(self, name):
+        # Variable names can only contain alphanumeric characters.
+        return re.match(r'^[a-zA-Z]$', name) is not None
     
     def generate_number(self):
         decimal_point_count = 0
