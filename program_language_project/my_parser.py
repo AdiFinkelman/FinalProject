@@ -41,10 +41,10 @@ class Parser:
                 result = SubNode(result, self.stmt())
             elif self.current_token.type == TokenType.EQUALS:
                 self.advance()
-                result = EqualsNode(result, self.stmt())
+                result = EqualsNode(result, self.factor())
             elif self.current_token.type == TokenType.NOT_EQUALS:
                 self.advance()
-                result = Not_EqualsNode(result, self.stmt())
+                result = Not_EqualsNode(result, self.factor())
             elif self.current_token.type == TokenType.GREATER_THAN:
                 self.advance()
                 result = GreaterThanNode(result, self.stmt())
@@ -59,7 +59,7 @@ class Parser:
                 result = OrNode(result, self.factor())
             elif self.current_token.type == TokenType.ASSIGN:
                 self.advance()
-                result = AssignNode(result, self.exp())
+                result = AssignNode(result, self.exp()) 
         
         return result
     

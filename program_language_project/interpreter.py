@@ -1,26 +1,10 @@
 from nodes import *
 from result import Result
 
-# Define constants for memory management
-MAX_RESULT_LENGTH = 1000  # Maximum length for calculation results
-MAX_VARIABLES = 100       # Maximum number of variables allowed
-
 class Interpreter:
     def __init__(self):
         # Dictionary to store variables
         self.variables = {}
-
-    # Overflow handling function
-    def handle_overflow(self, result):
-        if len(result) > MAX_RESULT_LENGTH:
-            result = result[:MAX_RESULT_LENGTH]
-            print("Result exceeds maximum length. Truncating...")
-        return result
-
-    # Variable count check
-    def check_variable_count(self, variables):
-        if len(variables) > MAX_VARIABLES:
-            raise Exception("Maximum number of variables exceeded.")
 
     def visit(self, node):
         method_name = f"visit_{type(node).__name__}" # AddNode -> visit_AddNode
@@ -33,30 +17,25 @@ class Interpreter:
     
     def visit_AddNode(self, node):
         result = self.visit(node.node_a).value + self.visit(node.node_b).value
-        result = self.handle_overflow(str(result))
         return Result(result)
     
     def visit_SubNode(self, node):
         result = self.visit(node.node_a).value - self.visit(node.node_b).value
-        result = self.handle_overflow(str(result))
         return Result(result)
     
     def visit_MulNode(self, node):
         result = self.visit(node.node_a).value * self.visit(node.node_b).value
-        result = self.handle_overflow(str(result))
         return Result(result)
     
     def visit_DivNode(self, node):
         try:
             result = self.visit(node.node_a).value / self.visit(node.node_b).value
-            result = self.handle_overflow(str(result))
             return Result(result)
         except:
             raise Exception("Runtime math error")
     
     def visit_ModNode(self, node):
         result = self.visit(node.node_a).value % self.visit(node.node_b).value
-        result = self.handle_overflow(str(result))
         return Result(result)
 
     def visit_EqualsNode(self, node):
@@ -91,7 +70,6 @@ class Interpreter:
         variable_name = node.variable.name
         value = self.visit(node.value).value
         self.variables[variable_name] = value
-        self.check_variable_count(self.variables)  # Check variable count
         return Result(value)
     
     def visit_IfNode(self, node):
