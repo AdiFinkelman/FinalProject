@@ -31,14 +31,32 @@ This project is a simple interpreter implemented in Python. It can parse and eva
 
 Once the interpreter is running, you can enter expressions at the prompt and get the evaluated result. For example:
 ```python
->>> 5 + 3
-8.0
->>> 10 * 2
-20.0
->>> a = 2
->>> b = 1
->>> if (a > b) : a
-2.0
+>>> 3+4
+7.0
+>>> a = 7+8
+15.0
+>>> b = (2+3)*3
+15.0
+>>> b = b + 1
+16.0
+>>> c = ((a+b)-15)*2
+32.0
+>>> if (c > a+b) : d = 1
+1.0
+>>> d
+1.0
+>>> if (c > a+b) : if c == 32 : if d != 2 : e = 5   
+5.0
+>>> e
+5.0
+>>> while e != 1 : e = e - 1
+e = 5.0
+e = 4.0
+e = 3.0
+e = 2.0
+1.0
+>>> e
+1.0
 ```
 
 To exit the interpreter, type "exit" at the prompt.
